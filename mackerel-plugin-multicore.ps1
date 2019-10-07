@@ -1,5 +1,26 @@
 function GraphDefinition() {
+    $meta = @{
+        graphs = @{
+            "cpu.multicore" = @{
+                label = "CPU each Cores"
+                unit = "percentage"
+                metrics = @(
+                    @{
+                        name = "*.idle"
+                        label = "PercentIdleTime"
+                        stacked = "true"
+                    },
+                    @{
+                        name = "*.processor"
+                        label = "PercentProcessorTime"
+                        stacked = "true"
+                    }
+                )
+            }
+        }
+    }
     Write-Output "# mackerel-agent-plugin"
+    Write-Output $($meta | ConvertTo-Json -Depth 4)
 }
 
 function GetEpoch($date) {
