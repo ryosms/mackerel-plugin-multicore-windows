@@ -17,5 +17,5 @@ mackerel-plugin-multicore.bat
 
 ```
 [plugin.metrics.multicore]
-command = "C:\path\to\mackerel-plugin-multicore.bat"
+command = 'C:\path\to\mackerel-plugin-multicore.bat'
 ```
