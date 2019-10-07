@@ -20,7 +20,7 @@ function GraphDefinition() {
         }
     }
     Write-Output "# mackerel-agent-plugin"
-    Write-Output $($meta | ConvertTo-Json -Depth 4)
+    Write-Output $($meta | ConvertTo-Json -Depth 4 -Compress)
 }
 
 function GetEpoch($date) {
