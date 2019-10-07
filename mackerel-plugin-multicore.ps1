@@ -28,7 +28,13 @@ function GetEpoch($date) {
 }
 function FetchMetrics() {
     $epoch = $(GetEpoch(Get-Date))
-    Write-Output $epoch
+
+    $cpus = Get-WmiObject Win32_PerfFormattedData_PerfOS_Processor
+    foreach ($cpu in $cpus) {
+        $name = $cpu.Name
+        Write-Output("cpu.multicore.{0}.idle`t{1}`t{2}" -f $name, $cpu.PercentIdleTime, $epoch)
+        Write-Output("cpu.multicore.{0}.processor`t{1}`t{2}" -f $name, $cpu.PercentProcessorTime, $epoch)
+    }
 }
 
 if($env:MACKEREL_AGENT_PLUGIN_META -eq "1") {
