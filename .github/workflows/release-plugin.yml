@@ -1,0 +1,46 @@
+name: Release Plugin
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release-plugin:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: install zip package
+      run: sudo apt-get install -y zip
+
+    - name: Setup Go
+      uses: actions/setup-go@v1
+        with:
+          version: 1.13
+        id: go
+
+    - name: Checkout
+      uses: actions/checkout@v1
+    
+    - name: package and release
+      run: |
+        set -xe
+        zip packages.zip \
+          LICENSE \
+          README.md \
+          mackerel-plugin-multicore.bat \
+          mackerel-plugin-multicore.ps1
+        
+        mkdir -p packages/
+        cp packages.zip packages/mackerel-plugin-multicore-windows-windows-amd64.zip
+        cp packages.zip packages/mackerel-plugin-multicore-windows-windows-386.zip
+
+        export PUSH_EVENT_REF=$(jq --raw-output .ref "$GITHUB_EVENT_PATH")
+        if [ "$(echo $PUSH_EVENT_REF | grep refs/tags/ | wc -l)" = "0" ]; then
+          echo "ref is not a tag: ${PUSH_EVENT_REF}"
+          exit 1
+        fi
+        export TAGNAME=$(echo $PUSH_EVENT_REF | sed -e 's!refs/tags/!!g')
+        export GOPATH=`go env GOPATH`
+        go get -u github.com/tcnksm/ghr
+        ${GOPATH}/bin/ghr -n ${TAGNAME} -b "${TAGNAME}" -draft ${TAGNAME} packages/
