@@ -35,8 +35,8 @@ jobs:
           mackerel-plugin-multicore.ps1
         
         mkdir -p packages/
-        cp packages.zip packages/mackerel-plugin-multicore-windows-windows-amd64.zip
-        cp packages.zip packages/mackerel-plugin-multicore-windows-windows-386.zip
+        cp packages.zip packages/mackerel-plugin-multicore-windows_windows_amd64.zip
+        cp packages.zip packages/mackerel-plugin-multicore-windows_windows_386.zip
 
         export PUSH_EVENT_REF=$(jq --raw-output .ref "$GITHUB_EVENT_PATH")
         if [ "$(echo $PUSH_EVENT_REF | grep refs/tags/ | wc -l)" = "0" ]; then
