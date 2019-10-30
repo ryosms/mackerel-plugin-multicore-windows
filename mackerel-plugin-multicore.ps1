@@ -11,7 +11,27 @@ function GraphDefinition() {
             "cpu.multicore.#" = @{
                 label = "MultiCore CPU"
                 unit = "percentage"
-                metrics = $metrics
+                metrics = @(@{
+                    name = "processor"
+                    label = "processor"
+                    stacked = $TRUE
+                })
+            }
+            "cpu.multicore.details.#" = @{
+                label = "MultiCore CPU details"
+                unit = "percentage"
+                metrics = @(
+                    @{
+                        name = "privileged"
+                        label = "privileged"
+                        stacked = $TRUE
+                    },
+                    @{
+                        name = "user"
+                        label = "user"
+                        stacked = $TRUE
+                    }
+                )
             }
         }
     }
@@ -31,6 +51,8 @@ function FetchMetrics() {
         if($name -ne "_Total") {
             $cpuName = $name.PadLeft(2, '0')
             Write-Output("cpu.multicore.cpu{0}.processor`t{1}`t{2}" -f $cpuName, $cpu.PercentProcessorTime, $epoch)
+            Write-Output("cpu.multicore.details.cpu{0}.privileged`t{1}`t{2}" -f $cpuName, $cpu.PercentPrivilegedTime, $epoch)
+            Write-Output("cpu.multicore.details.cpu{0}.user`t{1}`t{2}" -f $cpuName, $cpu.PercentUserTime, $epoch)
         }
     }
 }
