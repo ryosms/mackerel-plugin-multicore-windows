@@ -5,8 +5,6 @@ Get multicore CPU metrics for Windows
 * CPU processor time by cores
 * CPU idle time by cores
 
-this plugin **doesn't** work on powershell core.
-
 ## Synopsis
 
 ```shell
