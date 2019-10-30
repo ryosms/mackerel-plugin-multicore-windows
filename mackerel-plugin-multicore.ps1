@@ -1,11 +1,6 @@
 function GraphDefinition() {
     $metrics = @(
         @{
-            name = "idle"
-            label = "idle"
-            stacked = $TRUE
-        },
-        @{
             name = "processor"
             label = "processor"
             stacked = $TRUE
@@ -39,11 +34,9 @@ function FetchMetrics() {
     foreach ($cpu in $cpus) {
         $name = $cpu.Name
         if($name -eq "_Total") {
-            Write-Output("cpu.multicore.total.idle`t{1}`t{2}" -f $name, $cpu.PercentIdleTime, $epoch)
             Write-Output("cpu.multicore.total.processor`t{1}`t{2}" -f $name, $cpu.PercentProcessorTime, $epoch)    
         } else {
             $cpuName = $name.PadLeft(2, '0')
-            Write-Output("cpu.multicore.cpu{0}.idle`t{1}`t{2}" -f $cpuName, $cpu.PercentIdleTime, $epoch)
             Write-Output("cpu.multicore.cpu{0}.processor`t{1}`t{2}" -f $cpuName, $cpu.PercentProcessorTime, $epoch)
         }
     }
