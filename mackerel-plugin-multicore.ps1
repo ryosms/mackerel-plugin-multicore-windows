@@ -35,7 +35,7 @@ function GetEpoch($date) {
 function FetchMetrics() {
     $epoch = $(GetEpoch(Get-Date))
 
-    $cpus = Get-WmiObject Win32_PerfFormattedData_PerfOS_Processor
+    $cpus = Get-CimInstance -ClassName Win32_PerfFormattedData_PerfOS_Processor
     foreach ($cpu in $cpus) {
         $name = $cpu.Name
         if($name -eq "_Total") {
